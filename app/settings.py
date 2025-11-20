@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # CORE DO PROJETO
-    'core',
+    'core.apps.CoreConfig',
     # Se você separou módulos, adicione aqui:
     # 'education',
 ]
