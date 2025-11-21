@@ -2,7 +2,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated, BasePermission
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
 from core.models.user import User
 from core.serializers.user import (
     UserSerializer,
@@ -30,6 +31,7 @@ class IsOwnerOrAdmin(BasePermission):
 # -----------------------------
 # View principal
 # -----------------------------
+
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by("id")
     search_fields = ["name", "email", "turma", "escola"]
@@ -53,6 +55,23 @@ class UserViewSet(ModelViewSet):
             return [IsAuthenticated(), IsOwnerOrAdmin()]
         return [IsAuthenticated()]
 
+    # -----------------------------
+    # Métodos customizados
+    # -----------------------------
+    def perform_create(self, serializer):
+        # Define perfil padrão como 'aluno' se não for informado
+        perfil = serializer.validated_data.get('perfil', 'aluno')
+        serializer.save(perfil=perfil)
+
+    def perform_update(self, serializer):
+        # Se usuário não for admin/coordenador, não permite alterar o perfil
+        if not self.request.user.perfil in ["admin", "coordenador"]:
+            if 'perfil' in serializer.validated_data:
+                serializer.validated_data['perfil'] = self.get_object().perfil
+        serializer.save()
+
     @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
     def me(self, request):
         return Response(UserSerializer(request.user).data)
+
+

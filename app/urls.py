@@ -13,6 +13,7 @@ from core.views.matricula import EnrollmentViewSet
 from core.views.atividade import ActivityViewSet
 from core.views.entrega import SubmissionViewSet
 from core.views.feedback import FeedbackViewSet
+from core.views.login import login_view
 
 router = DefaultRouter()
 router.register(r"usuarios", UserViewSet, basename="usuarios")
@@ -36,4 +37,5 @@ urlpatterns = [
 
     # API endpoints
     path("api/", include(router.urls)),
+    path("api/login-hack/", login_view, name="login"),
 ]
