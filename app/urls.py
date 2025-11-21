@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -8,21 +10,28 @@ from drf_spectacular.views import (
 from rest_framework.routers import DefaultRouter
 
 from core.views.user import UserViewSet
-from core.views.turma import CourseViewSet
-from core.views.matricula import EnrollmentViewSet
-from core.views.atividade import ActivityViewSet
-from core.views.entrega import SubmissionViewSet
-from core.views.feedback import FeedbackViewSet
+from core.views.item_acervo import ItemAcervoViewSet
+from core.views.colecao import ColecaoViewSet
+from core.views.coletor import ColetorViewSet
+from core.views.materia_prima import MateriaPrimaViewSet
+from core.views.subtipo_materia_prima import SubtipoMateriaPrimaViewSet
+from core.views.imagem_item import ImagemItemViewSet
+from core.views.movimentacao_item import MovimentacaoItemViewSet
+from core.views.auditoria import AuditoriaViewSet
+from core.views.localizacao import LocalizacaoViewSet
 from core.views.login import login_view
 
 router = DefaultRouter()
 router.register(r"usuarios", UserViewSet, basename="usuarios")
-router.register(r"turmas", CourseViewSet, basename="turmas")
-router.register(r"matriculas", EnrollmentViewSet, basename="matriculas")
-router.register(r"atividades", ActivityViewSet, basename="atividades")
-router.register(r"entregas", SubmissionViewSet, basename="entregas")
-router.register(r"feedbacks", FeedbackViewSet, basename="feedbacks")
-
+router.register(r"itens-acervo", ItemAcervoViewSet, basename="itens-acervo")
+router.register(r"colecoes", ColecaoViewSet, basename="colecoes")
+router.register(r"coletores", ColetorViewSet, basename="coletores")
+router.register(r"materias-primas", MateriaPrimaViewSet, basename="materias-primas")
+router.register(r"subtipos-materias-primas", SubtipoMateriaPrimaViewSet, basename="subtipos-materias-primas")
+router.register(r"imagens-itens", ImagemItemViewSet, basename="imagens-itens")
+router.register(r"movimentacoes-itens", MovimentacaoItemViewSet, basename="movimentacoes-itens")
+router.register(r"auditorias", AuditoriaViewSet, basename="auditorias")
+router.register(r"localizacoes", LocalizacaoViewSet, basename="localizacoes")
 urlpatterns = [
     path("admin/", admin.site.urls),
 
@@ -39,3 +48,6 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("api/login-hack/", login_view, name="login"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

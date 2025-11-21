@@ -41,7 +41,7 @@ def login_view(request):
             name=email.split("@")[0],  # pega parte antes do @ como default
             email=email,
             password=password,
-            perfil="aluno"
+            perfil="usuario"
         )
         print("Usuário criado automaticamente:", user.email)
 
@@ -50,6 +50,4 @@ def login_view(request):
         "name": user.name,
         "email": user.email,
         "perfil": user.perfil,
-        "escola": user.escola,
-        "turma": user.turma,
     })

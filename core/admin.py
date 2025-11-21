@@ -7,11 +7,15 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from core.models.user import User
-from core.models.turma import Course
-from core.models.matricula import Enrollment
-from core.models.atividade import Activity
-from core.models.entrega import Submission
-from core.models.feedback import Feedback
+from core.models.item_acervo import ItemAcervo
+from core.models.colecao import Colecao
+from core.models.coletor import Coletor
+from core.models.materia_prima import MateriaPrima
+from core.models.subtipo_materia_prima import SubtipoMateriaPrima
+from core.models.imagem_item import ImagemItem
+from core.models.movimentacao_item import MovimentacaoItem
+from core.models.auditoria import Auditoria
+from core.models.localizacao import Localizacao
 
 
 # ------------------------
@@ -59,50 +63,92 @@ admin.site.register(User, UserAdmin)
 
 
 # ------------------------
-# Course / Turma
+# Item Acervo
 # ------------------------
-@admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
-    list_display = ("nome", "professor_responsavel")
-    search_fields = ("nome", "professor_responsavel__name")
-    list_filter = ("professor_responsavel",)
+
+@admin.register(ItemAcervo)
+class ItemAcervoAdmin(admin.ModelAdmin):
+    list_display = ('numero_acervo', 'titulo',)
+    search_fields = ('numero_acervo', 'titulo',)
+    list_filter = ('colecao', 'materia_prima', 'localizacao_fisica')
 
 
 # ------------------------
-# Enrollment
+# Coleção
 # ------------------------
-@admin.register(Enrollment)
-class EnrollmentAdmin(admin.ModelAdmin):
-    list_display = ("aluno", "turma", "status")
-    search_fields = ("aluno__name", "turma__nome")
-    list_filter = ("status", "turma")
+
+@admin.register(Colecao)
+class ColecaoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'descricao')
+    search_fields = ('nome',)
 
 
 # ------------------------
-# Activity
+# Coletor
 # ------------------------
-@admin.register(Activity)
-class ActivityAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "turma", "data_criacao", "data_entrega")
-    search_fields = ("titulo", "turma__nome")
-    list_filter = ("turma", "data_entrega")
+
+@admin.register(Coletor)
+class ColetorAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+    search_fields = ('nome',)
 
 
 # ------------------------
-# Submission
+# Matéria Prima
 # ------------------------
-class SubmissionAdmin(admin.ModelAdmin):
-    list_display = ("id", "atividade", "data_envio")
-    list_filter = ("atividade", "data_envio")
-    search_fields = ("atividade__titulo", "aluno__name")
+
+@admin.register(MateriaPrima)
+class MateriaPrimaAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+    search_fields = ('nome',)
 
 
+# ------------------------
+# Subtipo Matéria Prima
+# ------------------------
+
+@admin.register(SubtipoMateriaPrima)
+class SubtipoMateriaPrimaAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+    search_fields = ('nome',)
+
 
 # ------------------------
-# Feedback
+# Imagem Item
 # ------------------------
-@admin.register(Feedback)
-class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ("aluno", "professor", "turma", "nota_opcional", "criado_em")
-    search_fields = ("aluno__name", "professor__name", "turma__nome")
-    list_filter = ("turma", "professor", "nota_opcional")
+
+@admin.register(ImagemItem)
+class ImagemItemAdmin(admin.ModelAdmin):
+    list_display = ('item', 'imagem', 'criado_em')
+    search_fields = ('item__numero_acervo', 'item__titulo')
+
+
+# ------------------------
+# Movimentação Item
+# ------------------------
+
+@admin.register(MovimentacaoItem)
+class MovimentacaoItemAdmin(admin.ModelAdmin):
+    list_display = ('item', 'data_movimentacao', 'tipo', 'responsavel')
+    search_fields = ('item__numero_acervo', 'item__titulo', 'responsavel__email')
+    list_filter = ('tipo', 'localizacao_anterior', 'localizacao_nova')
+
+
+# ------------------------
+# Auditoria
+# ------------------------
+
+@admin.register(Auditoria)
+class AuditoriaAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'acao', 'data')
+    search_fields = ('usuario__email', 'acao')
+
+
+# ------------------------
+# Localização
+# ------------------------
+
+@admin.register(Localizacao)
+class LocalizacaoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'descricao', 'tipo')
+    search_fields = ('nome',)

@@ -8,14 +8,12 @@ from django.utils import timezone
 
 
 class PerfilChoices(models.TextChoices):
-    ALUNO = "aluno", "Aluno"
-    PROFESSOR = "professor", "Professor"
-    COORDENADOR = "coordenador", "Coordenador"
+    USUARIO = "usuario", "Usuário"
     ADMIN = "admin", "Administrador"
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None, perfil=PerfilChoices.ALUNO, **extra):
+    def create_user(self, email, password=None, perfil=PerfilChoices.USUARIO, **extra):
         if not email:
             raise ValueError("Email é obrigatório.")
 
@@ -48,19 +46,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     perfil = models.CharField(
         max_length=20,
         choices=PerfilChoices.choices,
-        default=PerfilChoices.ALUNO,
+        default=PerfilChoices.USUARIO,
     )
-
-    # 🔥 Campos educacionais que fazem sentido no hackaton
-    escola = models.CharField(max_length=255, null=True, blank=True)
-    turma = models.CharField(max_length=50, null=True, blank=True)  # Ex.: 3ºA, 2ºB
-    matricula = models.CharField(max_length=30, null=True, blank=True)
 
     # Booleans usuais
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
-    date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name"]

@@ -1,15 +1,10 @@
 from .user import User
-from .turma import Course
-from .matricula import Enrollment
-from .atividade import Activity
-from .entrega import Submission
-from .feedback import Feedback
-
-__all__ = [
-    "User",
-    "Course",
-    "Enrollment",
-    "Activity",
-    "Submission",
-    "Feedback",
-]
+from .item_acervo import ItemAcervo
+from .colecao import Colecao
+from .coletor import Coletor
+from .materia_prima import MateriaPrima
+from .subtipo_materia_prima import SubtipoMateriaPrima
+from .imagem_item import ImagemItem
+from .movimentacao_item import MovimentacaoItem
+from .auditoria import Auditoria
+from .localizacao import Localizacao

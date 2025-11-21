@@ -18,12 +18,12 @@ from core.serializers.user import (
 # -----------------------------
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.perfil in ["admin", "coordenador"]
+        return request.user.is_authenticated and request.user.perfil in ["admin"]
 
 
 class IsOwnerOrAdmin(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.perfil in ["admin", "coordenador"]:
+        if request.user.perfil in ["admin"]:
             return True
         return obj.id == request.user.id
 
@@ -34,8 +34,8 @@ class IsOwnerOrAdmin(BasePermission):
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by("id")
-    search_fields = ["name", "email", "turma", "escola"]
-    filterset_fields = ["perfil", "turma", "escola"]
+    search_fields = ["name", "email"]
+    filterset_fields = ["perfil"]
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -60,12 +60,12 @@ class UserViewSet(ModelViewSet):
     # -----------------------------
     def perform_create(self, serializer):
         # Define perfil padrão como 'aluno' se não for informado
-        perfil = serializer.validated_data.get('perfil', 'aluno')
+        perfil = serializer.validated_data.get('perfil', 'usuario')
         serializer.save(perfil=perfil)
 
     def perform_update(self, serializer):
         # Se usuário não for admin/coordenador, não permite alterar o perfil
-        if not self.request.user.perfil in ["admin", "coordenador"]:
+        if not self.request.user.perfil in ["admin"]:
             if 'perfil' in serializer.validated_data:
                 serializer.validated_data['perfil'] = self.get_object().perfil
         serializer.save()
