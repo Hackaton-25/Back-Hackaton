@@ -5,3 +5,4 @@ class ImagemItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImagemItem
         fields = '__all__'
+        depth = 1

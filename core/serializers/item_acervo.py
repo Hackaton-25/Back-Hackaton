@@ -5,3 +5,4 @@ class ItemAcervoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemAcervo
         fields = '__all__'
+        depth = 1

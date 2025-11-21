@@ -5,3 +5,4 @@ class SubtipoMateriaPrimaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubtipoMateriaPrima
         fields = '__all__'
+        depth = 1

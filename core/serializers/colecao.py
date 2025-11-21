@@ -5,3 +5,4 @@ class ColecaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colecao
         fields = '__all__'
+        depth = 1

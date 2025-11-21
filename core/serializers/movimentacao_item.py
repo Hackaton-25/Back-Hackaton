@@ -5,3 +5,4 @@ class MovimentacaoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = MovimentacaoItem
         fields = '__all__'
+        depth = 1

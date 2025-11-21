@@ -5,3 +5,4 @@ class LocalizacaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Localizacao
         fields = '__all__'
+        depth = 1

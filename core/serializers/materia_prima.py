@@ -5,3 +5,4 @@ class MateriaPrimaSerializer(serializers.ModelSerializer):
     class Meta:
         model = MateriaPrima
         fields = '__all__'
+        depth = 1

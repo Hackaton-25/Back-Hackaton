@@ -5,3 +5,4 @@ class AuditoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auditoria
         fields = '__all__'
+        depth = 1
